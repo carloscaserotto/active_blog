@@ -1,0 +1,28 @@
+
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Title:</strong>
+  <%= @post.title %>
+</p>
+<p >
+  <%= image_tag @post.header_image.variant(resize: "300x300") %>
+</p>
+
+<% if @post.files.any? %>
+   <h3>Attachments:</h3>
+   <% @post.files.each do |file| %>
+     <% if file.variable? %>
+       <%= image_tag file.variant(resize: "400x400") %>
+     <% elsif file.previewable? %>
+       <%= image_tag file.preview(resize: "400x400"), rails_blob_path(file, disposition: :attachment) %>
+     <% else %>
+       <%= link_to file.filename, rails_blob_path(file, disposition: :attachment) %>
+     <% end %>
+     <%= link_to 'Remove', delete_file_post_url(file.id), method: :delete, data: { confirm: 'Are you sure?' } %>
+   <% end %>
+ <% end %>
+
+
+<%= link_to 'Edit', edit_post_path(@post) %> |
+<%= link_to 'Back', posts_path %>

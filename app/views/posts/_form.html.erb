@@ -1,0 +1,49 @@
+<%= form_with(model: post) do |form| %>
+  <% if post.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(post.errors.count, "error") %> prohibited this post from being saved:</h2>
+
+      <ul>
+        <% post.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :title %>
+    <%= form.text_field :title %>
+  </div>
+  
+  <div class="field">
+    <%= form.label :header_image %>
+    <%= form.file_field :header_image %>
+  </div>
+
+  <div class="field">
+    <%= form.label :body %>
+    <%= form.text_area :body %>
+  </div>
+  
+  <div class="field">
+    <%= form.label :files %>
+    <%= form.file_field :files, multiple: true %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>
+
+<strong>Attachments:</strong>
+ <ul>
+ <% @post.files.each do |file| %>
+   <li>
+     <%= link_to file.filename, rails_blob_path(file, disposition: :attachment) %>
+     <%= link_to 'Remove', delete_file_post_url(file.id), method: :delete, data: { confirm: 'Are you sure?' } %>
+   </li>
+ <% end %>
+
+
+ </ul>
