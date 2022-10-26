@@ -21,11 +21,12 @@ class PostsController < ApplicationController
 
   # POST /posts or /posts.json
   def create
-    #byebug
+    
     @post = Post.new(post_params)
-
     respond_to do |format|
       if @post.save
+        #byebug
+        ContactMailer.with(post: @post).email.deliver_now
         format.html { redirect_to @post, notice: "Post was successfully created." }
         format.json { render :show, status: :created, location: @post }
       else
